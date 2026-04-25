@@ -957,29 +957,37 @@
         icon.textContent = state ? '🎵' : '🔇';
         btn.title = state ? 'Pausar música' : 'Tocar música';
         btn.classList.toggle('music-playing', state);
+        btn.classList.remove('music-pulse');
       }
 
-      // Tenta autoplay
+      // Inicia mudo (browsers permitem) → desmuta imediatamente
+      audio.muted = true;
       audio.play().then(() => {
+        audio.muted = false;
         setPlaying(true);
       }).catch(() => {
-        // Bloqueado pelo browser — mostra dica
+        // Ainda bloqueado: dispara no primeiro toque em qualquer lugar
         setPlaying(false);
         btn.classList.add('music-pulse');
+        const unlock = () => {
+          audio.muted = false;
+          audio.play().then(() => setPlaying(true)).catch(() => {});
+        };
+        document.addEventListener('touchstart', unlock, { once: true });
+        document.addEventListener('click',      unlock, { once: true });
       });
 
-      btn.addEventListener('click', () => {
-        btn.classList.remove('music-pulse');
+      // Botão manual play/pause
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (playing) {
           audio.pause();
           setPlaying(false);
         } else {
-          audio.play();
-          setPlaying(true);
+          audio.muted = false;
+          audio.play().then(() => setPlaying(true)).catch(() => {});
         }
       });
-
-      audio.addEventListener('ended', () => setPlaying(false));
     })();
   </script>
 </body>
