@@ -457,7 +457,9 @@
     }
 
     /* ── LISTA DE PRESENTES (livro) ── */
-    .gifts-section { text-align: center; }
+    .gifts-section {
+      text-align: center;
+    }
 
     .book-wrap {
       position: relative;
@@ -470,8 +472,8 @@
       box-shadow:
         -6px 0 0 0 #8b5e2a,
         -10px 0 0 0 #6b3f12,
-        0 8px 40px rgba(0,0,0,.55),
-        inset 0 0 60px rgba(139,94,42,.12);
+        0 8px 40px rgba(0, 0, 0, .55),
+        inset 0 0 60px rgba(139, 94, 42, .12);
       text-align: left;
     }
 
@@ -493,7 +495,7 @@
       color: #5c2d0a;
       text-align: center;
       margin-bottom: .4rem;
-      text-shadow: 1px 1px 2px rgba(255,255,255,.4);
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, .4);
     }
 
     .book-subtitle {
@@ -513,6 +515,7 @@
       margin-bottom: 1.6rem;
       position: relative;
     }
+
     .book-divider::before {
       content: '✦';
       position: absolute;
@@ -535,13 +538,16 @@
       align-items: baseline;
       gap: .7rem;
       padding: .75rem 0;
-      border-bottom: 1px dashed rgba(139,94,42,.3);
+      border-bottom: 1px dashed rgba(139, 94, 42, .3);
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(1rem, 3.5vw, 1.2rem);
       color: #3b1f06;
       line-height: 1.4;
     }
-    .book-list li:last-child { border-bottom: none; }
+
+    .book-list li:last-child {
+      border-bottom: none;
+    }
 
     .book-rose {
       color: #9b2335;
@@ -565,7 +571,7 @@
     .book-note {
       margin-top: 1.4rem;
       padding-top: 1rem;
-      border-top: 1px dashed rgba(139,94,42,.3);
+      border-top: 1px dashed rgba(139, 94, 42, .3);
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.1rem, 4vw, 1.5rem);
       color: #7a4a18;
@@ -601,12 +607,61 @@
         opacity: 0;
       }
     }
+
+    /* ── BOTÃO DE MÚSICA ── */
+    #music-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      width: 3.2rem;
+      height: 3.2rem;
+      border-radius: 50%;
+      border: 2px solid rgba(212, 175, 55, .6);
+      background: rgba(26, 10, 46, .85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--gold);
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,.4);
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    #music-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 28px rgba(212,175,55,.35);
+      border-color: var(--gold);
+    }
+    #music-btn.music-playing {
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(212,175,55,.45);
+    }
+    #music-btn.music-pulse {
+      animation: musicPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes musicPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,.5); }
+      50%       { box-shadow: 0 0 0 10px rgba(212,175,55,0); }
+    }
   </style>
 </head>
 
 <body>
 
   <canvas id="particles"></canvas>
+
+  <!-- ── ÁUDIO DE FUNDO ── -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="Supernatural (Instrumental) - NewJeans (youtube).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Botão flutuante play/pause -->
+  <button id="music-btn" title="Tocar música" aria-label="Controle de música">
+    <span id="music-icon">🔇</span>
+  </button>
 
   <!-- ── HERO ── -->
   <header class="hero">
@@ -637,7 +692,25 @@
     <h2 class="section-title reveal">Os Detalhes do Baile</h2>
     <div class="details-grid">
       <div class="card reveal">
-        <span class="card-icon">📅</span>
+        <span class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="2.5rem" height="2.5rem"
+            style="display:inline-block;vertical-align:middle;filter:drop-shadow(0 0 10px rgba(212,175,55,.5))">
+            <!-- corpo do calendário -->
+            <rect x="4" y="8" width="40" height="36" rx="5" ry="5" fill="#3b0c23" stroke="#d4af37" stroke-width="2" />
+            <!-- cabeçalho vermelho/vinho -->
+            <rect x="4" y="8" width="40" height="13" rx="5" ry="5" fill="#6b0f2b" />
+            <rect x="4" y="16" width="40" height="5" fill="#6b0f2b" />
+            <!-- argolas -->
+            <rect x="14" y="4" width="4" height="9" rx="2" fill="#d4af37" />
+            <rect x="30" y="4" width="4" height="9" rx="2" fill="#d4af37" />
+            <!-- mês -->
+            <text x="24" y="19" text-anchor="middle" font-family="serif" font-size="7" font-weight="bold" fill="#f5e07a"
+              letter-spacing="1">JUN</text>
+            <!-- dia -->
+            <text x="24" y="37" text-anchor="middle" font-family="serif" font-size="18" font-weight="bold"
+              fill="#d4af37">06</text>
+          </svg>
+        </span>
         <p class="card-label">Data</p>
         <p class="card-value">Sábado, 06 de Junho</p>
         <p class="card-sub">2026</p>
@@ -870,6 +943,43 @@
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
       }, { threshold: .15 });
       els.forEach(el => io.observe(el));
+    })();
+
+    /* ── PLAYER DE MÚSICA ── */
+    (function () {
+      const audio = document.getElementById('bg-music');
+      const btn   = document.getElementById('music-btn');
+      const icon  = document.getElementById('music-icon');
+      let playing = false;
+
+      function setPlaying(state) {
+        playing = state;
+        icon.textContent = state ? '🎵' : '🔇';
+        btn.title = state ? 'Pausar música' : 'Tocar música';
+        btn.classList.toggle('music-playing', state);
+      }
+
+      // Tenta autoplay
+      audio.play().then(() => {
+        setPlaying(true);
+      }).catch(() => {
+        // Bloqueado pelo browser — mostra dica
+        setPlaying(false);
+        btn.classList.add('music-pulse');
+      });
+
+      btn.addEventListener('click', () => {
+        btn.classList.remove('music-pulse');
+        if (playing) {
+          audio.pause();
+          setPlaying(false);
+        } else {
+          audio.play();
+          setPlaying(true);
+        }
+      });
+
+      audio.addEventListener('ended', () => setPlaying(false));
     })();
   </script>
 </body>
