@@ -627,24 +627,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,.4);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .4);
       transition: transform .2s, box-shadow .2s, border-color .2s;
     }
+
     #music-btn:hover {
       transform: scale(1.1);
-      box-shadow: 0 6px 28px rgba(212,175,55,.35);
+      box-shadow: 0 6px 28px rgba(212, 175, 55, .35);
       border-color: var(--gold);
     }
+
     #music-btn.music-playing {
       border-color: var(--gold);
-      box-shadow: 0 0 18px rgba(212,175,55,.45);
+      box-shadow: 0 0 18px rgba(212, 175, 55, .45);
     }
+
     #music-btn.music-pulse {
       animation: musicPulse 1.8s ease-in-out infinite;
     }
+
     @keyframes musicPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,.5); }
-      50%       { box-shadow: 0 0 0 10px rgba(212,175,55,0); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, .5);
+      }
+
+      50% {
+        box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+      }
     }
 
     /* ── INTRO ENVELOPE ── */
@@ -660,15 +671,22 @@
       gap: 2rem;
       transition: opacity .9s ease;
     }
-    #intro-overlay.fade-out { opacity: 0; pointer-events: none; }
-    #intro-overlay.gone    { display: none; }
+
+    #intro-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #intro-overlay.gone {
+      display: none;
+    }
 
     .env-tagline {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.2rem, 4vw, 1.8rem);
       color: var(--gold);
       opacity: .85;
-      text-shadow: 0 0 20px rgba(212,175,55,.5);
+      text-shadow: 0 0 20px rgba(212, 175, 55, .5);
       animation: pulse 2.5s ease-in-out infinite;
     }
 
@@ -676,92 +694,127 @@
       position: relative;
       width: clamp(260px, 78vw, 400px);
       cursor: pointer;
-      filter: drop-shadow(0 18px 36px rgba(0,0,0,.7));
+      filter: drop-shadow(0 18px 36px rgba(0, 0, 0, .7));
       animation: envFloat 3.5s ease-in-out infinite;
       transition: filter .3s;
       perspective: 700px;
     }
-    .envelope-wrap:hover { filter: drop-shadow(0 18px 36px rgba(212,175,55,.45)); }
-    @keyframes envFloat {
-      0%,100% { transform: translateY(0) rotate(-1.5deg); }
-      50%      { transform: translateY(-14px) rotate(1.5deg); }
+
+    .envelope-wrap:hover {
+      filter: drop-shadow(0 18px 36px rgba(212, 175, 55, .45));
     }
-    .envelope-wrap.opening { animation: none; }
+
+    @keyframes envFloat {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-1.5deg);
+      }
+
+      50% {
+        transform: translateY(-14px) rotate(1.5deg);
+      }
+    }
+
+    .envelope-wrap.opening {
+      animation: none;
+    }
 
     /* Body */
     .env-body {
       width: 100%;
       padding-bottom: 64%;
-      background: linear-gradient(150deg,#f5e9c8 0%,#ede0b0 60%,#e0cc95 100%);
+      background: linear-gradient(150deg, #f5e9c8 0%, #ede0b0 60%, #e0cc95 100%);
       border: 2px solid #c8a84b;
       border-radius: 3px 3px 8px 8px;
       position: relative;
       overflow: hidden;
     }
+
     /* diagonal fold lines inside */
-    .env-body::before, .env-body::after {
-      content:'';
+    .env-body::before,
+    .env-body::after {
+      content: '';
       position: absolute;
-      top:0; bottom:0;
-      width:52%;
-      background: linear-gradient(to bottom right, rgba(139,94,42,.12) 0%, transparent 60%);
+      top: 0;
+      bottom: 0;
+      width: 52%;
+      background: linear-gradient(to bottom right, rgba(139, 94, 42, .12) 0%, transparent 60%);
     }
-    .env-body::before { left:0; }
-    .env-body::after  { right:0; transform: scaleX(-1); }
+
+    .env-body::before {
+      left: 0;
+    }
+
+    .env-body::after {
+      right: 0;
+      transform: scaleX(-1);
+    }
 
     /* Inner glow revealed when open */
     .env-glow {
-      position:absolute; inset:0;
-      background: radial-gradient(ellipse at 50% 20%, rgba(255,220,80,.9) 0%, rgba(212,160,40,.4) 45%, transparent 75%);
-      opacity:0;
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 20%, rgba(255, 220, 80, .9) 0%, rgba(212, 160, 40, .4) 45%, transparent 75%);
+      opacity: 0;
       transition: opacity .5s ease .35s;
-      z-index:1;
+      z-index: 1;
     }
-    .envelope-wrap.opening .env-glow { opacity:1; }
+
+    .envelope-wrap.opening .env-glow {
+      opacity: 1;
+    }
 
     /* Flap */
     .env-flap {
-      position:absolute;
-      top:0; left:0; right:0;
-      height:52%;
-      background: linear-gradient(175deg,#c8a84b 0%,#dfc880 100%);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 52%;
+      background: linear-gradient(175deg, #c8a84b 0%, #dfc880 100%);
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: 50% 0;
-      transition: transform .75s cubic-bezier(.4,0,.2,1);
-      z-index:3;
-      border-bottom: 1px solid rgba(160,114,42,.4);
+      transition: transform .75s cubic-bezier(.4, 0, .2, 1);
+      z-index: 3;
+      border-bottom: 1px solid rgba(160, 114, 42, .4);
     }
+
     .envelope-wrap.opening .env-flap {
       transform: perspective(700px) rotateX(-175deg);
     }
 
     /* Wax seal */
     .wax-seal {
-      position:absolute;
-      top:46%; left:50%;
-      transform: translate(-50%,-50%);
-      width: clamp(54px,15vw,72px);
-      height: clamp(54px,15vw,72px);
-      background: radial-gradient(circle,#9b2335,#6b0f2b);
-      border-radius:50%;
-      border:2px solid #d4af37;
-      display:flex; align-items:center; justify-content:center;
-      font-size: clamp(1.5rem,4.5vw,2rem);
-      z-index:4;
-      box-shadow: 0 2px 14px rgba(0,0,0,.55), 0 0 22px rgba(155,35,53,.4);
+      position: absolute;
+      top: 46%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(54px, 15vw, 72px);
+      height: clamp(54px, 15vw, 72px);
+      background: radial-gradient(circle, #9b2335, #6b0f2b);
+      border-radius: 50%;
+      border: 2px solid #d4af37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1.5rem, 4.5vw, 2rem);
+      z-index: 4;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, .55), 0 0 22px rgba(155, 35, 53, .4);
       transition: transform .35s, opacity .35s;
     }
+
     .envelope-wrap.opening .wax-seal {
-      transform: translate(-50%,-50%) scale(0);
-      opacity:0;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
     }
 
     .env-cta {
-      font-family:'Cormorant Garamond',serif;
-      font-size: clamp(.85rem,3vw,1.1rem);
-      color: rgba(212,175,55,.7);
-      letter-spacing:.18em;
-      text-transform:uppercase;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(.85rem, 3vw, 1.1rem);
+      color: rgba(212, 175, 55, .7);
+      letter-spacing: .18em;
+      text-transform: uppercase;
       animation: pulse 2.5s ease-in-out infinite;
       transition: opacity .3s;
     }
@@ -774,7 +827,7 @@
 
   <!-- ── ÁUDIO DE FUNDO ── -->
   <audio id="bg-music" loop preload="auto">
-    <source src="Supernatural (Instrumental) - NewJeans (youtube).mp3" type="audio/mpeg">
+    <source src="Karaokê - Sentimentos São (Português-BR) - Gabibis Karaokê (youtube).mp3" type="audio/mpeg">
   </audio>
 
   <!-- ── INTRO OVERLAY ── -->
@@ -1079,13 +1132,13 @@
 
     /* ── ENVELOPE INTRO ── */
     (function () {
-      const overlay  = document.getElementById('intro-overlay');
-      const envWrap  = document.getElementById('envelope-wrap');
-      const cta      = document.getElementById('env-cta');
-      const audio    = document.getElementById('bg-music');
-      const btn      = document.getElementById('music-btn');
-      const icon     = document.getElementById('music-icon');
-      let playing    = false;
+      const overlay = document.getElementById('intro-overlay');
+      const envWrap = document.getElementById('envelope-wrap');
+      const cta = document.getElementById('env-cta');
+      const audio = document.getElementById('bg-music');
+      const btn = document.getElementById('music-btn');
+      const icon = document.getElementById('music-icon');
+      let playing = false;
 
       function setPlaying(state) {
         playing = state;
@@ -1107,7 +1160,7 @@
         // 2. Após a aba abrir, dá zoom e faz fade-out
         setTimeout(() => {
           envWrap.style.transition = 'transform 0.85s cubic-bezier(0.4,0,1,1)';
-          envWrap.style.transform  = 'scale(18)';
+          envWrap.style.transform = 'scale(18)';
           overlay.classList.add('fade-out');
           startMusic();
         }, 700);
@@ -1115,7 +1168,7 @@
         // 3. Esconde o overlay completamente
         setTimeout(() => {
           overlay.classList.add('gone');
-          envWrap.style.transform  = '';
+          envWrap.style.transform = '';
           envWrap.style.transition = '';
         }, 1650);
       });
@@ -1127,7 +1180,7 @@
           audio.pause();
           setPlaying(false);
         } else {
-          audio.play().then(() => setPlaying(true)).catch(() => {});
+          audio.play().then(() => setPlaying(true)).catch(() => { });
         }
       });
     })();
