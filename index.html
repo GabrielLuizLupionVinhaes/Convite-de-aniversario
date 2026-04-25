@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convite – 15 Anos | Tema Bela e a Fera</title>
+  <meta name="description" content="Você está convidado para um baile encantado de 15 anos com tema Bela e a Fera.">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f5e07a;
+      --burgundy: #6b0f2b;
+      --deep: #1a0a2e;
+      --rose: #c0395a;
+      --cream: #fdf6e3;
+      --glass: rgba(255, 255, 255, 0.06);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--deep);
+      color: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── CANVAS DE PARTÍCULAS ── */
+    #particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(107, 15, 43, .55) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(26, 10, 46, .9) 0%, transparent 80%),
+        linear-gradient(160deg, #1a0a2e 0%, #3b0c23 50%, #1a0a2e 100%);
+      z-index: -1;
+    }
+
+    .crown-decor {
+      font-size: clamp(2rem, 8vw, 4rem);
+      color: var(--gold);
+      opacity: .85;
+      text-shadow: 0 0 30px rgba(212, 175, 55, .6);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .divider {
+      width: clamp(140px, 50vw, 280px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 1rem auto;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '✦';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-size: .65rem;
+    }
+
+    .divider::before {
+      left: 20%;
+    }
+
+    .divider::after {
+      right: 20%;
+    }
+
+    .pre-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.3rem, 5vw, 2rem);
+      color: var(--gold-light);
+      text-shadow: 0 0 20px rgba(212, 175, 55, .5);
+      letter-spacing: .05em;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 12vw, 6.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #f5e07a 0%, #d4af37 40%, #b8860b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 18px rgba(212, 175, 55, .45));
+      margin: .3rem 0;
+    }
+
+    .hero-subtitle {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 8vw, 3.8rem);
+      color: #f0c0cc;
+      text-shadow: 0 0 25px rgba(192, 57, 90, .6);
+      margin-top: -.3rem;
+    }
+
+    .hero-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.8rem, 11vw, 5.5rem);
+      color: #fff;
+      text-shadow: 0 0 30px rgba(255, 255, 255, .3), 0 0 60px rgba(212, 175, 55, .3);
+      margin: .5rem 0 .2rem;
+    }
+
+    .hero-age {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      color: var(--gold);
+      letter-spacing: .35em;
+      text-transform: uppercase;
+    }
+
+    .rose-container {
+      font-size: clamp(3rem, 12vw, 6rem);
+      margin: 1.2rem 0;
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(192, 57, 90, .7));
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      color: var(--gold);
+      opacity: .7;
+      animation: bounce 2.2s ease-in-out infinite;
+      font-size: .75rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    /* ── SEÇÃO GENÉRICA ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 8vw, 3.5rem);
+      color: var(--gold);
+      text-align: center;
+      text-shadow: 0 0 20px rgba(212, 175, 55, .4);
+      margin-bottom: 2rem;
+    }
+
+    /* ── CARDS DE DETALHES ── */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--glass);
+      border: 1px solid rgba(212, 175, 55, .25);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform .3s, box-shadow .3s;
+    }
+
+    .card:hover,
+    .card:active {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(212, 175, 55, .2);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: .75rem;
+      filter: drop-shadow(0 0 10px rgba(212, 175, 55, .5));
+    }
+
+    .card-label {
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .4rem;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .card-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #fff;
+      line-height: 1.4;
+    }
+
+    .card-sub {
+      font-size: .9rem;
+      color: rgba(255, 255, 255, .6);
+      margin-top: .3rem;
+    }
+
+    /* ── CONTAGEM REGRESSIVA ── */
+    .countdown-section {
+      background: linear-gradient(180deg, transparent, rgba(107, 15, 43, .25), transparent);
+    }
+
+    .countdown-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: clamp(.3rem, 2vw, 1.5rem);
+      flex-wrap: nowrap;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .count-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 0;
+      flex: 1 1 0;
+    }
+
+    .count-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 7vw, 4.5rem);
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(212, 175, 55, .5);
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .count-label {
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .5);
+      margin-top: .3rem;
+    }
+
+    .count-sep {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 6vw, 3.5rem);
+      color: var(--gold);
+      opacity: .5;
+      align-self: flex-start;
+      padding-top: .1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── MENSAGEM ── */
+    .message-box {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .message-text {
+      font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+      line-height: 1.85;
+      color: rgba(255, 255, 255, .85);
+      font-style: italic;
+      position: relative;
+      padding: 0 1rem;
+    }
+
+    .message-text::before,
+    .message-text::after {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      color: var(--gold);
+      opacity: .25;
+      position: absolute;
+      line-height: 1;
+    }
+
+    .message-text::before {
+      top: -.5rem;
+      left: -.5rem;
+    }
+
+    .message-text::after {
+      content: '"';
+      bottom: -2rem;
+      right: -.5rem;
+    }
+
+    /* ── RSVP ── */
+    .rsvp-section {
+      text-align: center;
+    }
+
+    .rsvp-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--glass);
+      border: 1px solid rgba(212, 175, 55, .3);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .rsvp-text {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, .75);
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+    }
+
+    .btn-confirm {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #f5e07a 100%);
+      color: #1a0a2e;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: .9rem 2.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      letter-spacing: .05em;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, .4);
+    }
+
+    .btn-confirm:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 30px rgba(212, 175, 55, .6);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 1.5rem 4rem;
+      border-top: 1px solid rgba(212, 175, 55, .15);
+    }
+
+    .footer-quote {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      color: var(--gold);
+      opacity: .8;
+      margin-bottom: .8rem;
+    }
+
+    .footer-copy {
+      font-size: .8rem;
+      color: rgba(255, 255, 255, .3);
+      letter-spacing: .1em;
+    }
+
+    /* ── ANIMAÇÕES ── */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-3deg);
+      }
+
+      50% {
+        transform: translateY(-14px) rotate(3deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .85;
+        text-shadow: 0 0 30px rgba(212, 175, 55, .6);
+      }
+
+      50% {
+        opacity: 1;
+        text-shadow: 0 0 50px rgba(212, 175, 55, .9), 0 0 80px rgba(212, 175, 55, .4);
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(8px);
+      }
+    }
+
+    /* Reveal on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── LISTA DE PRESENTES (livro) ── */
+    .gifts-section { text-align: center; }
+
+    .book-wrap {
+      position: relative;
+      max-width: 520px;
+      margin: 0 auto;
+      background:
+        linear-gradient(160deg, #f5e9c8 0%, #ede0b0 40%, #e8d8a0 100%);
+      border-radius: 4px 16px 16px 4px;
+      padding: 2.8rem 2.4rem 2.4rem;
+      box-shadow:
+        -6px 0 0 0 #8b5e2a,
+        -10px 0 0 0 #6b3f12,
+        0 8px 40px rgba(0,0,0,.55),
+        inset 0 0 60px rgba(139,94,42,.12);
+      text-align: left;
+    }
+
+    /* lombada do livro */
+    .book-wrap::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, #a0722a 0%, #6b3f12 50%, #a0722a 100%);
+      border-radius: 4px 0 0 4px;
+    }
+
+    .book-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      color: #5c2d0a;
+      text-align: center;
+      margin-bottom: .4rem;
+      text-shadow: 1px 1px 2px rgba(255,255,255,.4);
+    }
+
+    .book-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .85rem;
+      color: #8b5e2a;
+      text-align: center;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+    }
+
+    .book-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #b8860b, transparent);
+      margin-bottom: 1.6rem;
+      position: relative;
+    }
+    .book-divider::before {
+      content: '✦';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: #b8860b;
+      font-size: .6rem;
+      background: #ede0b0;
+      padding: 0 .4rem;
+    }
+
+    .book-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .book-list li {
+      display: flex;
+      align-items: baseline;
+      gap: .7rem;
+      padding: .75rem 0;
+      border-bottom: 1px dashed rgba(139,94,42,.3);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      color: #3b1f06;
+      line-height: 1.4;
+    }
+    .book-list li:last-child { border-bottom: none; }
+
+    .book-rose {
+      color: #9b2335;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    .book-item-name {
+      font-weight: 400;
+      font-style: italic;
+      flex: 1;
+    }
+
+    .book-item-detail {
+      font-size: .88rem;
+      color: #7a4a18;
+      white-space: nowrap;
+      font-style: normal;
+    }
+
+    .book-note {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(139,94,42,.3);
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.1rem, 4vw, 1.5rem);
+      color: #7a4a18;
+      text-align: center;
+    }
+
+    /* Petals */
+    .petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      font-size: 1rem;
+      animation: petalFall linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes petalFall {
+      0% {
+        transform: translateY(-60px) rotate(0deg) translateX(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: .7;
+      }
+
+      90% {
+        opacity: .4;
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(720deg) translateX(60px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="particles"></canvas>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="crown-decor">👑</div>
+    <div class="divider"></div>
+    <p class="pre-title">Um convite encantado para</p>
+
+    <div class="rose-container">🌹</div>
+
+    <h2 class="hero-subtitle">O Baile de</h2>
+    <h1 class="hero-title">15 Anos</h1>
+    <p class="hero-name">Maria Gabriela</p>
+    <p class="hero-age">✦ &nbsp; Bela e a Fera &nbsp; ✦</p>
+
+    <div class="divider" style="margin-top:1.2rem;"></div>
+    <p class="pre-title" style="font-size:clamp(1rem,3.5vw,1.4rem); opacity:.8;">
+      "Tale as old as time…"
+    </p>
+
+    <div class="scroll-hint">
+      <span>▼</span>
+      <span>Rolar</span>
+    </div>
+  </header>
+
+  <!-- ── DETALHES ── -->
+  <section>
+    <h2 class="section-title reveal">Os Detalhes do Baile</h2>
+    <div class="details-grid">
+      <div class="card reveal">
+        <span class="card-icon">📅</span>
+        <p class="card-label">Data</p>
+        <p class="card-value">Sábado, 06 de Junho</p>
+        <p class="card-sub">2026</p>
+      </div>
+      <div class="card reveal">
+        <span class="card-icon">🕯️</span>
+        <p class="card-label">Horário</p>
+        <p class="card-value">19h30</p>
+        <p class="card-sub">Abertura dos portões às 19h00</p>
+      </div>
+      <div class="card reveal">
+        <span class="card-icon">🏰</span>
+        <p class="card-label">Local</p>
+        <p class="card-value">Espaço Marinho</p>
+        <p class="card-sub">Rua Marcelo Emerson Franchine, 1391 - Jardim Aurora (MARINGÁ)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTAGEM REGRESSIVA ── -->
+  <section class="countdown-section">
+    <h2 class="section-title reveal">Faltam…</h2>
+    <div class="countdown-wrap reveal">
+      <div class="count-box">
+        <span class="count-num" id="cd-days">--</span>
+        <span class="count-label">dias</span>
+      </div>
+      <span class="count-sep">:</span>
+      <div class="count-box">
+        <span class="count-num" id="cd-hours">--</span>
+        <span class="count-label">horas</span>
+      </div>
+      <span class="count-sep">:</span>
+      <div class="count-box">
+        <span class="count-num" id="cd-mins">--</span>
+        <span class="count-label">minutos</span>
+      </div>
+      <span class="count-sep">:</span>
+      <div class="count-box">
+        <span class="count-num" id="cd-secs">--</span>
+        <span class="count-label">segundos</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MENSAGEM ── -->
+  <section>
+    <h2 class="section-title reveal">Uma Mensagem Especial</h2>
+    <div class="message-box reveal">
+      <p class="message-text">
+        Como nos contos de fadas mais belos, chegou o momento de celebrar
+        a história de uma princesa especial. Quinze anos de vida que encantaram
+        a todos ao redor — assim como a Bela encantou o Castelo Encantado.
+        <br><br>
+        Venha fazer parte dessa noite mágica e inesquecível!
+      </p>
+    </div>
+  </section>
+
+  <!-- ── LISTA DE PRESENTES ── -->
+  <section class="gifts-section">
+    <h2 class="section-title reveal">Lista de Presentes</h2>
+    <div class="book-wrap reveal">
+      <p class="book-title">Sugestões de Presentes</p>
+      <p class="book-subtitle">Para a nossa princesa</p>
+      <div class="book-divider"></div>
+      <ul class="book-list">
+        <li>
+          <span class="book-rose">👗</span>
+          <span class="book-item-name">Roupa</span>
+          <span class="book-item-detail">Tam. P · Calça 36</span>
+        </li>
+        <li>
+          <span class="book-rose">👠</span>
+          <span class="book-item-name">Calçado</span>
+          <span class="book-item-detail">Nº 36</span>
+        </li>
+        <li>
+          <span class="book-rose">✨</span>
+          <span class="book-item-name">Bijuteria Prata</span>
+          <span class="book-item-detail">menos brinco</span>
+        </li>
+        <li>
+          <span class="book-rose">💄</span>
+          <span class="book-item-name">Maquiagem</span>
+        </li>
+        <li>
+          <span class="book-rose">🧴</span>
+          <span class="book-item-name">Hidratante</span>
+        </li>
+        <li>
+          <span class="book-rose">🌸</span>
+          <span class="book-item-name">Perfume</span>
+        </li>
+        <li>
+          <span class="book-rose">🫧</span>
+          <span class="book-item-name">Body Splash</span>
+        </li>
+      </ul>
+      <p class="book-note">Ou o que vier do seu coração 🎁</p>
+    </div>
+  </section>
+
+  <!-- ── RSVP ── -->
+  <section class="rsvp-section">
+    <h2 class="section-title reveal">Confirme sua Presença</h2>
+    <div class="rsvp-wrap reveal">
+      <p class="rsvp-text">
+        Para garantir seu lugar nesse baile encantado, confirme sua presença
+        até o dia <strong style="color:var(--gold)">30 de Maio</strong>.
+      </p>
+      <a href="https://wa.me/554499726892?text=Ol%C3%A1!%20Confirmo%20minha%20presen%C3%A7a%20no%20baile%20de%2015%20anos%20da%20Maria%20%F0%9F%8C%B9"
+        class="btn-confirm" target="_blank" rel="noopener">
+        🌹 &nbsp; Confirmar Presença
+      </a>
+      <p style="margin-top:1.2rem; font-size:.85rem; color:rgba(255,255,255,.4);">
+        Via WhatsApp · Clique para confirmar
+      </p>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p class="footer-quote">Com amor, Família Freitas 🌹</p>
+    <div class="divider" style="margin-bottom:1rem;"></div>
+    <p class="footer-copy">✦ &nbsp; Maria Gabriela · 15 Anos · 2026 &nbsp; ✦</p>
+  </footer>
+
+  <script>
+    /* ── PARTÍCULAS DOURADAS ── */
+    (function () {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Particle {
+        constructor() {
+          this.reset(true);
+        }
+        reset(init) {
+          this.x = Math.random() * W;
+          this.y = init ? Math.random() * H : H + 10;
+          this.r = Math.random() * 1.8 + .4;
+          this.vy = -(Math.random() * .6 + .2);
+          this.vx = (Math.random() - .5) * .3;
+          this.life = 0;
+          this.maxLife = Math.random() * 200 + 150;
+          this.gold = Math.random() > .3;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.life++;
+          if (this.life > this.maxLife || this.y < -10) this.reset(false);
+        }
+        draw() {
+          const alpha = Math.sin((this.life / this.maxLife) * Math.PI) * .8;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fillStyle = this.gold
+            ? `rgba(212,175,55,${alpha})`
+            : `rgba(240,192,204,${alpha * .6})`;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = this.gold ? '#d4af37' : '#f0c0cc';
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+      (function loop() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(loop);
+      })();
+    })();
+
+    /* ── PÉTALAS CAINDO ── */
+    (function () {
+      const emojis = ['🌸', '🌹', '🌺', '✨', '⭐'];
+      const count = window.innerWidth < 500 ? 8 : 14;
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'petal';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.fontSize = (Math.random() * .8 + .7) + 'rem';
+        el.style.animationDuration = (Math.random() * 8 + 7) + 's';
+        el.style.animationDelay = (Math.random() * 10) + 's';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+      }
+    })();
+
+    /* ── CONTAGEM REGRESSIVA ── */
+    (function () {
+      const target = new Date('2026-06-06T19:30:00');
+      function update() {
+        const diff = target - new Date();
+        if (diff <= 0) {
+          ['days', 'hours', 'mins', 'secs'].forEach(id =>
+            document.getElementById('cd-' + id).textContent = '00');
+          return;
+        }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+        document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+        document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+      }
+      update();
+      setInterval(update, 1000);
+    })();
+
+    /* ── SCROLL REVEAL ── */
+    (function () {
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+      }, { threshold: .15 });
+      els.forEach(el => io.observe(el));
+    })();
+  </script>
+</body>
+
+</html>
